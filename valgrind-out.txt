@@ -1,0 +1,251 @@
+==26924== Memcheck, a memory error detector
+==26924== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==26924== Using Valgrind-3.25.1-4441567fbe-20250520 and LibVEX; rerun with -h for copyright info
+==26924== Command: ./server 8080
+==26924== Parent PID: 26923
+==26924== 
+--26924-- 
+--26924-- Valgrind options:
+--26924--    --leak-check=full
+--26924--    --show-leak-kinds=all
+--26924--    --track-origins=yes
+--26924--    --verbose
+--26924--    --log-file=valgrind-out.txt
+--26924--    --trace-children=yes
+--26924-- Contents of /proc/version:
+--26924--   Linux version 6.8.0-85-generic (buildd@lcy02-amd64-024) (x86_64-linux-gnu-gcc-12 (Ubuntu 12.3.0-1ubuntu1~22.04.2) 12.3.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #85~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep 19 16:18:59 UTC 2
+--26924-- 
+--26924-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed-fma
+--26924-- Page sizes: currently 4096, max supported 4096
+--26924-- Valgrind library directory: /usr/local/libexec/valgrind
+--26924-- Reading syms from /home/mat/Desktop/TecnInf/y3/ADI2/C HTTP Server/server
+--26924-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--26924--   Considering /usr/lib/debug/.build-id/ac/af96d7b1a6bad57b559d646233d5dc1a23257c.debug ..
+--26924--   .. build-id is valid
+--26924-- Reading syms from /usr/local/libexec/valgrind/memcheck-amd64-linux
+--26924--    object doesn't have a dynamic symbol table
+--26924-- Scheduler: using generic scheduler lock implementation.
+--26924-- Reading suppressions file: /usr/local/libexec/valgrind/default.supp
+==26924== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-26924-by-mat-on-???
+==26924== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-26924-by-mat-on-???
+==26924== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-26924-by-mat-on-???
+==26924== 
+==26924== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==26924== don't want to do, unless you know exactly what you're doing,
+==26924== or are doing some strange experiment):
+==26924==   /usr/local/libexec/valgrind/../../bin/vgdb --pid=26924 ...command...
+==26924== 
+==26924== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==26924==   /path/to/gdb ./server
+==26924== and then give GDB the following command
+==26924==   target remote | /usr/local/libexec/valgrind/../../bin/vgdb --pid=26924
+==26924== --pid is optional if only one valgrind process is running
+==26924== 
+--26924-- REDIR: 0x4030a40 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2a42 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--26924-- REDIR: 0x402d220 (ld-linux-x86-64.so.2:strcmp) redirected to 0x580c2a5c (vgPlain_amd64_linux_REDIR_FOR_strcmp)
+--26924-- REDIR: 0x4030810 (ld-linux-x86-64.so.2:index) redirected to 0x580c2a95 (vgPlain_amd64_linux_REDIR_FOR_index)
+--26924-- REDIR: 0x4030410 (ld-linux-x86-64.so.2:bcmp) redirected to 0x580c2a77 (vgPlain_amd64_linux_REDIR_FOR_memcmp)
+--26924-- Reading syms from /usr/local/libexec/valgrind/vgpreload_core-amd64-linux.so
+--26924-- Reading syms from /usr/local/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x0402d220 (strcmp              ) R-> (0000.0) 0x580c2a5c vgPlain_amd64_linux_REDIR_FOR_strcmp
+--26924--     new: 0x0402d220 (strcmp              ) R-> (2016.0) 0x048591b0 strcmp
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x04030a40 (strlen              ) R-> (0000.0) 0x580c2a42 vgPlain_amd64_linux_REDIR_FOR_strlen
+--26924--     new: 0x04030a40 (strlen              ) R-> (2007.0) 0x04858100 strlen
+--26924-- REDIR: 0x4030fa0 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x485cb20 (mempcpy)
+--26924-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--26924--   Considering /usr/lib/debug/.build-id/4f/7b0c955c3d81d7cac1501a2498b69d1d82bfe7.debug ..
+--26924--   .. build-id is valid
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x0491cc60 (memalign            ) R-> (1011.0) 0x04856964 memalign
+--26924--     new: 0x0491cc60 (memalign            ) R-> (1017.0) 0x048571f9 aligned_alloc
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x0491cc60 (memalign            ) R-> (1011.0) 0x04856964 memalign
+--26924--     new: 0x0491cc60 (memalign            ) R-> (1017.0) 0x0485707a aligned_alloc
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x0491cc60 (memalign            ) R-> (1011.0) 0x04856964 memalign
+--26924--     new: 0x0491cc60 (memalign            ) R-> (1017.0) 0x048571f9 aligned_alloc
+==26924== WARNING: new redirection conflicts with existing -- ignoring it
+--26924--     old: 0x0491cc60 (memalign            ) R-> (1011.0) 0x04856964 memalign
+--26924--     new: 0x0491cc60 (memalign            ) R-> (1017.0) 0x0485707a aligned_alloc
+--26924-- REDIR: 0x491f720 (libc.so.6:strnlen) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f9e0 (libc.so.6:strpbrk) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f2e0 (libc.so.6:strcmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493dcd0 (libc.so.6:wcsnlen) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x49206d0 (libc.so.6:memset) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493c540 (libc.so.6:wcslen) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920c10 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493c370 (libc.so.6:wcschr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f260 (libc.so.6:index) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f960 (libc.so.6:rindex) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x49205a0 (libc.so.6:memmove) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+==26924== Preferring higher priority redirection:
+--26924--     old: 0x04a17840 (__memcpy_avx_unalign) R-> (2018.0) 0x0485a370 __memcpy_avx_unaligned_erms
+--26924--     new: 0x04a17840 (__memcpy_avx_unalign) R-> (2018.1) 0x0485bb60 memmove
+--26924-- REDIR: 0x493c3f0 (libc.so.6:wcscmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x49209e0 (libc.so.6:stpncpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493c9b0 (libc.so.6:wmemchr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f830 (libc.so.6:strncmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920a70 (libc.so.6:strcasecmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f420 (libc.so.6:strcspn) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493c470 (libc.so.6:wcscpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f1d0 (libc.so.6:strcat) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920b60 (libc.so.6:strncasecmp_l) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920480 (libc.so.6:bcmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4928570 (libc.so.6:memrchr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4922010 (libc.so.6:strchrnul) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f390 (libc.so.6:strcpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920b10 (libc.so.6:strcasecmp_l) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f6a0 (libc.so.6:strlen) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f8d0 (libc.so.6:strncpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x493ca40 (libc.so.6:wmemcmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920950 (libc.so.6:stpcpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x49203f0 (libc.so.6:memchr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491fb00 (libc.so.6:strspn) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x49207d0 (libc.so.6:mempcpy) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920ac0 (libc.so.6:strncasecmp) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4921f80 (libc.so.6:rawmemchr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x491f7a0 (libc.so.6:strncat) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4920310 (libc.so.6:strstr) redirected to 0x48451ba (_vgnU_ifunc_wrapper)
+--26924-- REDIR: 0x4a14690 (libc.so.6:__strrchr_avx2) redirected to 0x4857970 (rindex)
+--26924-- REDIR: 0x4a14480 (libc.so.6:__strchrnul_avx2) redirected to 0x485c610 (strchrnul)
+--26924-- REDIR: 0x491c0a0 (libc.so.6:malloc) redirected to 0x484e799 (malloc)
+--26924-- REDIR: 0x4a17800 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x485c720 (mempcpy)
+--26924-- REDIR: 0x491c3e0 (libc.so.6:free) redirected to 0x4851aba (free)
+--26924-- REDIR: 0x4a14860 (libc.so.6:__strlen_avx2) redirected to 0x4857fe0 (strlen)
+--26924-- REDIR: 0x491d520 (libc.so.6:calloc) redirected to 0x485616a (calloc)
+--26924-- REDIR: 0x4a18000 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x485ba50 (memset)
+--26924-- REDIR: 0x4a17840 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x485bb60 (memmove)
+--26924-- REDIR: 0x4a0f870 (libc.so.6:__strspn_sse42) redirected to 0x485cfa0 (strspn)
+--26924-- REDIR: 0x4a0f610 (libc.so.6:__strcspn_sse42) redirected to 0x485cec0 (strcspn)
+--26924-- REDIR: 0x4a0f9c0 (libc.so.6:__strcmp_avx2) redirected to 0x48590b0 (strcmp)
+--26924-- REDIR: 0x4a0fe00 (libc.so.6:__strncmp_avx2) redirected to 0x4858800 (strncmp)
+--26924-- REDIR: 0x493b180 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x485cca0 (strstr)
+--26924-- REDIR: 0x4a15320 (libc.so.6:__strncat_avx2) redirected to 0x4857d20 (strncat)
+==26924== 
+==26924== Process terminating with default action of signal 11 (SIGSEGV)
+==26924==  Bad permissions for mapped region at address 0x40032CC
+==26924==    at 0x40015FA: strlower (file_helpers.c:10)
+==26924==    by 0x400165A: get_file_mime_type (file_helpers.c:25)
+==26924==    by 0x40023C1: get_handler (server_handlers.c:62)
+==26924==    by 0x40021D9: handle_request (server_handlers.c:25)
+==26924==    by 0x400261A: handle_connection (server_handlers.c:120)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== HEAP SUMMARY:
+==26924==     in use at exit: 20,972,586 bytes in 13 blocks
+==26924==   total heap usage: 25 allocs, 12 frees, 20,978,527 bytes allocated
+==26924== 
+==26924== Searching for pointers to 13 not-freed blocks
+==26924== Checked 29,460,328 bytes
+==26924== 
+==26924== 1 bytes in 1 blocks are still reachable in loss record 1 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001CE8: get_body (http_helpers.c:69)
+==26924==    by 0x4001D29: parse_request_body (http_helpers.c:77)
+==26924==    by 0x4002601: handle_connection (server_handlers.c:118)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 2 bytes in 1 blocks are still reachable in loss record 2 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001B5E: get_header (http_helpers.c:25)
+==26924==    by 0x4001E23: parse_request_headers (http_helpers.c:91)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 4 bytes in 1 blocks are still reachable in loss record 3 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001AF1: get_header (http_helpers.c:17)
+==26924==    by 0x4001E09: parse_request_headers (http_helpers.c:90)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 8 bytes in 2 blocks are still reachable in loss record 4 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x4002B30: main (server.c:155)
+==26924== 
+==26924== 9 bytes in 1 blocks are still reachable in loss record 5 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001BE3: get_header (http_helpers.c:34)
+==26924==    by 0x4001E3D: parse_request_headers (http_helpers.c:92)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 15 bytes in 1 blocks are still reachable in loss record 6 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001C5A: get_header (http_helpers.c:43)
+==26924==    by 0x4001E57: parse_request_headers (http_helpers.c:93)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 16 bytes in 1 blocks are still reachable in loss record 7 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x400195C: load_file (file_helpers.c:73)
+==26924==    by 0x400238F: get_handler (server_handlers.c:56)
+==26924==    by 0x40021D9: handle_request (server_handlers.c:25)
+==26924==    by 0x400261A: handle_connection (server_handlers.c:120)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 64 bytes in 1 blocks are still reachable in loss record 8 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001C5A: get_header (http_helpers.c:43)
+==26924==    by 0x4001E8B: parse_request_headers (http_helpers.c:95)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 79 bytes in 1 blocks are still reachable in loss record 9 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x491F58E: strdup (strdup.c:42)
+==26924==    by 0x4001C5A: get_header (http_helpers.c:43)
+==26924==    by 0x4001E71: parse_request_headers (http_helpers.c:94)
+==26924==    by 0x40025EE: handle_connection (server_handlers.c:117)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 272 bytes in 1 blocks are possibly lost in loss record 10 of 12
+==26924==    at 0x48561F4: calloc (vg_replace_malloc.c:1675)
+==26924==    by 0x401A7D9: calloc (rtld-malloc.h:44)
+==26924==    by 0x401A7D9: allocate_dtv (dl-tls.c:375)
+==26924==    by 0x401A7D9: _dl_allocate_tls (dl-tls.c:634)
+==26924==    by 0x490C7B4: allocate_stack (allocatestack.c:430)
+==26924==    by 0x490C7B4: pthread_create@@GLIBC_2.34 (pthread_create.c:647)
+==26924==    by 0x4002BA6: main (server.c:190)
+==26924== 
+==26924== 596 bytes in 1 blocks are still reachable in loss record 11 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x400182F: load_file (file_helpers.c:50)
+==26924==    by 0x400238F: get_handler (server_handlers.c:56)
+==26924==    by 0x40021D9: handle_request (server_handlers.c:25)
+==26924==    by 0x400261A: handle_connection (server_handlers.c:120)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== 20,971,520 bytes in 1 blocks are still reachable in loss record 12 of 12
+==26924==    at 0x484E80F: malloc (vg_replace_malloc.c:446)
+==26924==    by 0x400254B: handle_connection (server_handlers.c:92)
+==26924==    by 0x490BAC2: start_thread (pthread_create.c:442)
+==26924==    by 0x499CA73: clone (clone.S:100)
+==26924== 
+==26924== LEAK SUMMARY:
+==26924==    definitely lost: 0 bytes in 0 blocks
+==26924==    indirectly lost: 0 bytes in 0 blocks
+==26924==      possibly lost: 272 bytes in 1 blocks
+==26924==    still reachable: 20,972,314 bytes in 12 blocks
+==26924==         suppressed: 0 bytes in 0 blocks
+==26924== 
+==26924== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
