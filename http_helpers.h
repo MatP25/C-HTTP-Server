@@ -14,6 +14,7 @@ char *get_boundary(const char *content_type);
 void parse_multipart_form_data(struct Req_Body* body);
 void free_part(struct Part *part);
 bool is_text_based_mime_type(char *content_type);
+bool is_valid_http_version(const char *version);
 struct Response *build_response(const char *status, const char *content_type, size_t content_length, const void *body);
 void free_response(struct Response *response);
 

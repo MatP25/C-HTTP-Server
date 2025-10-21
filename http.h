@@ -1,6 +1,9 @@
 #ifndef HTTP_H
 #define HTTP_H
 
+#define HTTP_V_1_1 "HTTP/1.1"
+#define HTTP_V_1_0 "HTTP/1.0"
+
 #define STATUS_OK "200 OK"
 #define STATUS_CREATED "201 Created"
 #define STATUS_NOT_FOUND "404 Not Found"

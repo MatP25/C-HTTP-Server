@@ -1,7 +1,5 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -I. -g
-SRCDIR=src
-OBJDIR=bin
 OBJS=file_helpers.o other_helpers.o request_handlers.o response_handlers.o http_helpers.o server_handlers.o server.o
 
 all: server

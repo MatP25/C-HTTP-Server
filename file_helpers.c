@@ -9,7 +9,6 @@ char *get_file_mime_type(char *file_name)
     }
     
     ext++;
-    // strlower(ext);
 
     if (strcmp(ext, "html") == 0 || strcmp(ext, "htm") == 0) { return MIME_TEXT_HTML; }
     if (strcmp(ext, "jpeg") == 0 || strcmp(ext, "jpg") == 0) { return MIME_JPEG; }
@@ -65,6 +64,7 @@ struct file_data *load_file(char *filename) {
         free(file_buffer);
         return NULL;
     }
+    memset(file_buffer, 0, buffer_size); // Clear buffer
 
     // Read the contents of the file into the buffer
     ssize_t bytes_read = read(file_fd, file_buffer, file_size);
@@ -86,6 +86,12 @@ struct file_data *load_file(char *filename) {
 
     // Copy file contents into struct
     char *file_contents = malloc(buffer_size);
+    if (file_contents == NULL) {
+        free(filedata);
+        free(file_buffer);
+        return NULL;
+    }
+    memset(file_contents, 0, buffer_size); // Clear contents buffer
     memcpy(file_contents, file_buffer, buffer_size);
     free(file_buffer);
 

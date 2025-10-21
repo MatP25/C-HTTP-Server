@@ -1,0 +1,9 @@
+h1, h2 {
+    color: navy;
+}
+
+button {
+    border: 1px solid green;
+    padding: 10px 20px;
+    margin: 1rem 0;
+}

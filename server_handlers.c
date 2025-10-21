@@ -12,7 +12,7 @@ void router(
         return;
     }
 
-    if (strcmp(req_headers->protocol, "HTTP/1.1") != 0) {
+    if (!is_valid_http_version(req_headers->protocol)) {
         printf("Error: Unsupported HTTP version: %s\n", req_headers->protocol);
         send_505(client_fd);
         return;

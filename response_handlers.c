@@ -6,7 +6,6 @@
  * returns -1.
 */
 void send_response(struct Response *response, int client_fd) {
-    printf("Sending response to client_fd: %d\n", client_fd);
     int headersSent = send(client_fd, response->headers, response->headers_length, 0);
 
     if (headersSent == -1) {
@@ -24,7 +23,17 @@ void send_response(struct Response *response, int client_fd) {
 }
 
 void send_200(int client_fd, const char *body, const char *content_type, size_t content_length) {
-    struct Response *response = build_response(STATUS_OK, content_type, content_length, body);
+    size_t body_length = 0;
+    // Determine body length based on MIME type
+    // If the content type is text-based, use the length of the body, which is a null-terminated string
+    // Otherwise, use the provided content_length for binary data
+    if (is_text_based_mime_type((char *)content_type) && body != NULL) {
+        body_length = strlen(body);
+    } else {
+        body_length = content_length;
+    }
+
+    struct Response *response = build_response(STATUS_OK, content_type, body_length, body);
     send_response(response, client_fd);
     free_response(response);
 }

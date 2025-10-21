@@ -239,6 +239,10 @@ void parse_multipart_form_data(struct Req_Body* body) {
     free(boundary);
 }
 
+bool is_valid_http_version(const char *version) {
+    return (strcmp(version, HTTP_V_1_1) == 0 || strcmp(version, HTTP_V_1_0) == 0);
+}
+
 bool is_text_based_mime_type(char *content_type) {
     
     if (strcmp(content_type, MIME_JSON) == 0) return true;
@@ -389,6 +393,7 @@ struct Response *build_response(const char *status, const char *content_type, si
     if (!response) {
         return NULL;
     }
+    memset(response, 0, sizeof(struct Response));
 
     // Build headers
     const char *headers_template = "HTTP/1.1 %s\r\nContent-Type: %s\r\nContent-Length: %zu\r\n\r\n";
@@ -400,6 +405,7 @@ struct Response *build_response(const char *status, const char *content_type, si
         free(response);
         return NULL;
     }
+    memset(response->headers, 0, headers_size + 1);
 
     // Fill in headers template
     sprintf(response->headers, headers_template, status, content_type, content_length);
@@ -417,6 +423,7 @@ struct Response *build_response(const char *status, const char *content_type, si
 
     response->body = malloc(content_length);
     if (body) {
+        memset(response->body, 0, content_length);
         // Use memcpy to copy body content so that it works for binary data as well
         memcpy(response->body, body, content_length);
     } else {

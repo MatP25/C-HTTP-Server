@@ -2,9 +2,7 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <pthread.h>
-#include <signal.h>
 #include "server_handlers.h"
-
 
 int main(int argc, char **argv)
 {
