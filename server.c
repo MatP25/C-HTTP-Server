@@ -21,68 +21,41 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	/**
-	 * Disable output buffering.
-	 * This means that the program will not wait to
-	 * output to the terminal
-	 *
-	 * For example, when doing
-	 * printf("a");
-	 * printf("b");
-	 * printf("c");
-	 * The program will output a,b, and c immediately after
-	 * each print instead of waiting for a newline ('\n')
-	 */
 	setbuf(stdout, NULL);
-
-	// printf for debugging
 	printf("Starting server...\n");
 
-	/**
-	 * Creates a variable srv_addr that stores an IPv4 socket address.
-	 * .sin_family = AF_INET -> Indicates that the socket address is an IPv4 address
-	 * .sin_port = htons(PORT) -> Converts the port number from `Host Byte Order` to
-	 * 								`Network Byte Order`
-	 * .sin_addr = { htonl(INADDR_ANY) } -> "Sets the IP address to INADDR_ANY, which
-	 * 										means the socket will be bound to all available
-	 * 										network interfaces on the machine. INADDR_ANY is
-	 * 										a constant that represents "any" network interface."
-	 * 										- Dave (ChatGPT)
-	 *
-	 * "The htons() function converts the unsigned short integer hostshort from host byte order to network byte order. "
-	 * "The htonl() function converts the unsigned integer hostlong from host byte order to network byte order. "
-	 * 		- https://linux.die.net/man/3/htons
-	 *
-	 * struct sockaddr_in is a struct from in.h that has the following data:
-	 * 			sin_port -> Port number
-	 * 			sin_addr -> Internet address
-	 * 			sin_zero -> Padding to make the structure the same size as sockaddr
-	 */
+	/*
+		sockaddr_in : https://man7.org/linux/man-pages/man3/sockaddr.3type.html
+		sin_family  : Address family (AF_INET for IPv4) (AF_INET6 for IPv6)
+		sin_port    : Port number
+		sin_addr    : IP address
+
+		htons       : https://man7.org/linux/man-pages/man3/htons.3p.html
+		Converts unsigned short integer (16-bit) from host byte order to network byte order.
+
+		htonl       : https://man7.org/linux/man-pages/man3/htonl.3p.html
+		Converts unsigned long integer (32-bit) from host byte order to network byte order.
+
+		The htons function converts a 16-bit unsigned integer (short) from host byte order to network byte order. 
+		Network byte order is always big-endian. This ensures a consistent interpretation across different systems.
+		Similarly, the htonl function converts a 32-bit unsigned integer (long) from host byte order to network byte order.
+
+		INADDR_ANY is a special address constant used to indicate that a socket should bind to all network interfaces on a machine. 
+		When a server application binds to INADDR_ANY, it can accept connections and receive data from any IP address that the computer has, including its loopback address 127.0.0.1
+	*/
 	struct sockaddr_in serv_addr = {
-		.sin_family = AF_INET,			 // IPv4
-		.sin_port = htons(PORT),		 // `Host Byte Order` to `Network Byte Order` short
-		.sin_addr = {htonl(INADDR_ANY)}, // `Host Byte Order` to `Network Byte Order` long
+		.sin_family = AF_INET,			
+		.sin_port = htons(PORT),		 
+		.sin_addr = {htonl(INADDR_ANY)}, 
 	};
 
-	/**
-	 * Creates a socket connection using IPv4 (AF_INET), and TCP (SOCK_STREAM)
-	 * Other options include AF_INET6 for IPv6 and SOCK_DGRAM for UDP.
-	 *
-	 * The last parameter is the protocol, which according to the documentation:
-	 *
-	 * 		"If the protocol parameter is set to 0, the system selects the default
-	 * 		protocol number for the domain and socket type requested."
-	 *
-	 * I was a bit confused about why is it necessary to specify the protocol twice.
-	 * For instance, SOCK_STREAM is already selecting TCP, but the function also
-	 * expects IPPROTO_TCP as the third parameter. I couldn't really find an answer
-	 * so I assume it is for safety reasons or if you know what you are doing.
-	 *
-	 * socket() returns a number greater or equal than 0 if the connection was successful
-	 * or -1 if an error occurred
-	 */
-	// Variable to represent the file descriptor (fd) of the server socket
-	// Default protocol is 0
+	/*
+		socket     : https://man7.org/linux/man-pages/man2/socket.2.html
+		argument 1 : domain   --> AF_INET for IPv4
+		argument 2 : type     --> SOCK_STREAM for bidirectional stream
+		argument 3 : protocol --> 0 to select default protocol for given domain and type (TCP for AF_INET and SOCK_STREAM)
+		returns    : file descriptor for the server socket or -1 on error
+	*/
 	int server_fd = socket(AF_INET, SOCK_STREAM, 0); 
 	if (server_fd == -1)
 	{
@@ -90,9 +63,15 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	/**
-	 * setting REUSE_PORT ensures that we don't run into 'Address already in use' errors
-	 */
+	/*
+		setsockopt : https://man7.org/linux/man-pages/man3/setsockopt.3p.html
+		argument 1 : file descriptor for locating the socket
+		argument 2 : level  --> SOL_SOCKET to manipulate options at the sockets API level
+		argument 3 : option --> SO_REUSEADDR to allow reuse of local addresses
+		argument 4 : pointer to option value
+		argument 5 : size of the option value
+		returns    : 0 on success, -1 on error
+	*/
 	int reuse = 1;
 	if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0)
 	{
@@ -100,25 +79,15 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	/**
-	 * 		"The bind() function binds a unique local name to the socket with descriptor socket.
-	 * 		After calling socket(), a descriptor does not have a name associated with it.
-	 * 		However, it does belong to a particular address family as specified when socket()
-	 * 		is called. The exact format of a name depends on the address family."
-	 *
-	 * 	- https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-bind-bind-name-socket
-	 *
-	 * In other words: when you first create a socket using `socket()` function, the socket is
-	 * not yet associated with a specific address or port.
-	 *
-	 * Params:
-	 * -> server_fd is the socket identifier that we created before.
-	 * -> serv_addr is the struct that we specified. serv_addr is casted from
-	 * sockaddr_in to sockaddr since sockaddr is the generic struct for socket addresses.
-	 * -> The size of the socket address structure.
-	 *
-	 * The function should return 0 if the binding was successful
-	 */
+	/*
+		bind : https://man7.org/linux/man-pages/man2/bind.2.html
+		argument 1 : server_fd  --->  file descriptor of the socket to be bound
+		argument 2 : serv_addr  --->  pointer to the sockaddr structure (casted from sockaddr_in to sockaddr)
+		argument 3 : size of the sockaddr structure
+		returns    : 0 on success, -1 on error
+
+		assigns a name to a socket identified by socket file descriptor
+	*/
 	if (bind(server_fd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) != 0)
 	{
 		perror("Bind failed");
@@ -128,10 +97,15 @@ int main(int argc, char **argv)
 	// Maximum length of the queue of pending connections
 	int connection_backlog = 5; 
 
-	/**
-	 * `listen()` indicates that the server socket is ready to accept incoming connections
-	 * returns 0 if connection was successful
-	 */
+	/*
+		listen : https://man7.org/linux/man-pages/man2/listen.2.html
+		argument 1 : server_fd           --->  file descriptor of the socket to be marked as a passive socket
+		argument 2 : connection_backlog  --->  maximum length of the queue of pending connections
+		returns    : 0 on success, -1 on error
+
+		a passive socket is will be used to accept incoming connections
+		connection_backlog defines the maximum length to which the queue of pending connections for sockfd may grow
+	*/
 	if (listen(server_fd, connection_backlog) != 0)
 	{
 		perror("Listen failed");
@@ -142,15 +116,25 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		printf("Waiting for a new connection...\n");
-		// Variable of type struct sockaddr_in to store the client address
-		struct sockaddr_in client_addr; 
-		
-		// Variable to store the length of the struct client_addr
-		socklen_t client_addr_len = sizeof(client_addr);
+		struct sockaddr_in client_addr; // Stores the client address
+		socklen_t cl_addr_len = sizeof(client_addr);
 
 		// Variable to represent the file descriptor (fd) of the client socket
 		int *client_fd = malloc(sizeof(int));
-		*client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len); 
+		/*
+			accept : https://man7.org/linux/man-pages/man2/accept.2.html
+			argument 1 : server_f     --->  file descriptor of the listening socket
+			argument 2 : client_addr  --->  pointer to a sockaddr structure to store the address of the connecting entity
+			argument 3 : cl_addr_len  --->  pointer to a socklen_t variable that initially contains the size of client_addr structure
+			returns    : file descriptor for the accepted socket or -1 on error
+
+			It extracts the first connection request on the queue of pending connections for the listening socket, 
+			sockfd, creates a new connected socket, 
+			and returns a new file descriptor referring to that socket.  
+			The newly created socket is not in the listening state.  
+			The original socket sockfd is unaffected by this call.
+		*/
+		*client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &cl_addr_len); 
 
 		if (*client_fd == -1)
 		{
@@ -160,9 +144,11 @@ int main(int argc, char **argv)
 			printf("Client connected: %d\n", *client_fd);
 			
 			pthread_t thread_pid;
-			// Create a new thread that runs the handle_connection function
-			// and passes the client_fd as an argument
-			// handle_connection closes it's own socket once it finishes
+			/*
+				Create a new thread that runs the handle_connection function, 
+				and passes the client_fd as an argument
+				Handle_connection closes it's own socket once it finishes
+			*/
 			int thread_result = pthread_create(&thread_pid, NULL, handle_connection, (void *)client_fd);
 			if (thread_result != 0) {
 				perror("Failed to create thread");
