@@ -6,6 +6,7 @@
 #define STATUS_NOT_FOUND "404 Not Found"
 #define STATUS_BAD_REQUEST "400 Bad Request"
 #define STATUS_INTERNAL_SERVER_ERROR "500 Internal Server Error"
+#define STATUS_NOT_IMPLEMENTED "501 Not Implemented"
 #define STATUS_HTTP_VERSION_NOT_SUPPORTED "505 HTTP Version Not Supported"
 
 #define MIME_TEXT_PLAIN "text/plain"
@@ -13,11 +14,13 @@
 #define MIME_TEXT_CSS "text/css"
 #define MIME_TEXT_JS "text/javascript"
 #define MIME_OCTET_STREAM "application/octet-stream"
+#define MIME_URLENCODED "application/x-www-form-urlencoded"
+#define MIME_MULTIPART_FORM "multipart/form-data"
 #define MIME_JSON "application/json"
 #define MIME_JPEG "image/jpeg"
 #define MIME_PNG "image/png"
 
-#define UPLOAD_DIR "uploads/"
+#define POST_DIR "www/post/"
 #define HTML_DIR "www/"
 
 struct Req_Headers
@@ -29,13 +32,12 @@ struct Req_Headers
     char *user_agent;
     char *accept;
     char *content_type;
-    char *content_disposition;
     int content_length;
 };
 
 struct Req_Body {
     char *content_type;
-    char *content;
+    void *content;
     int length;
 };
 
@@ -46,6 +48,19 @@ struct Response {
     char *headers;
     int headers_length;
     void *body;
+};
+
+struct Part {
+    char *content_disposition;
+    size_t cd_length;
+    char *form_data_name;
+    size_t fdn_length;
+    char *file_name;
+    size_t fn_length;
+    char *content_type;
+    size_t ct_length;
+    void *part_content;
+    size_t pc_length;
 };
 
 

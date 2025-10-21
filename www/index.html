@@ -7,16 +7,35 @@
 </head>
 <body>
     <h1>HTTP Server in C</h1>
-    <a href="pages/other.html">Go to Other Page</a>
+    <a href="pages/other.html">Go to Page 1</a>
     <br>
-    <a href="pages/page.html">Go to Another Page</a>
+    <a href="pages/page.html">Go to Page 2</a>
     <br/>
     <br/>
 
     <h2>File form</h2>
-    <form action="http://localhost:8080/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*, text/*"/>
-        <button type="submit">Upload</button>
+    <form action="http://localhost:8080/post" method="post" enctype="multipart/form-data" target="_blank">
+        <div style="display:flex; flex-direction:column; max-width:350px; padding:2rem;">
+            
+             <!-- <label for="file">File upload:</label>
+            <input type="file" name="file" id="file" accept=".txt">
+            <br> -->
+
+            <label for="file_content">Write to file:</label>
+            <textarea name="file_content" id="file_content"></textarea>
+            <br>
+
+            <label for="file_content2">Write to file:</label>
+            <textarea name="file_content2" id="file_content2"></textarea>
+
+            <br>
+           
+
+            <button type="submit">Send</button>
+
+            
+        </div>
+        
     </form>
 
     <br>

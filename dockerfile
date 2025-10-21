@@ -8,15 +8,18 @@ WORKDIR /app
 COPY . .
 # Compile the source code and generate hello binary executable file
 RUN make
+
+
 # use another container to run the program
 FROM alpine
 
-ENV PORT=8080
-
 # copy binary executable to new container
 COPY --from=build-env /app/server /app/server
+COPY --from=build-env /app/www /app/www
 WORKDIR /app
+
+
 # at last run the program
 EXPOSE 8080
 
-CMD ["/app/server", "8080"] 
+ENTRYPOINT ["./server", "8080"]

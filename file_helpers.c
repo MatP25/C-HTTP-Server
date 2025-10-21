@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "file_helpers.h"
-#include <sys/stat.h>
-#include "http.h"
-
 
 char *get_file_mime_type(char *file_name)
 {
@@ -25,6 +20,29 @@ char *get_file_mime_type(char *file_name)
     if (strcmp(ext, "png") == 0) { return MIME_PNG; }
 
     return MIME_OCTET_STREAM;
+}
+
+int write_file(char *filename, char *data, size_t data_size) {
+    printf("Writing %zu bytes to file '%s'\n", data_size, filename);
+    // Open the file for writing (create if it doesn't exist)
+    int file_fd = open(filename, O_APPEND | O_CREAT | O_WRONLY, 0644);
+
+    if (file_fd == -1) {
+        perror("Could not open file for writing");
+        return -1;
+    }
+
+    // Write the data to the file
+    ssize_t bytes_written = write(file_fd, data, data_size);
+    printf("Bytes written: %zd\n", bytes_written);
+    close(file_fd);
+
+    if (bytes_written == -1 || (size_t)bytes_written != data_size) {
+        perror("Failed to write file");
+        return -1;
+    }
+
+    return 0; // Success
 }
 
 struct file_data *load_file(char *filename) {

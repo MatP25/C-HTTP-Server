@@ -2,6 +2,10 @@
     "files.associations": {
         "stat.h": "c",
         "file_helpers.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "http_helpers.h": "c",
+        "response_handlers.h": "c",
+        "other_helpers.h": "c",
+        "stdio.h": "c"
     }
 }

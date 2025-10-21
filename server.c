@@ -1,13 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
-#include <string.h>
-#include <unistd.h>
 #include <pthread.h>
+#include <signal.h>
 #include "server_handlers.h"
+
 
 int main(int argc, char **argv)
 {
@@ -153,45 +150,32 @@ int main(int argc, char **argv)
 
 		// Variable to represent the file descriptor (fd) of the client socket
 		int *client_fd = malloc(sizeof(int));
-		*client_fd = accept(
-			server_fd, 
-			(struct sockaddr *)&client_addr, 
-			&client_addr_len); 
+		*client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len); 
 
 		if (*client_fd == -1)
 		{
 			perror("Failed to connect to client");
-			continue; // Ignore failed connection
-		}
-		printf("Client connected: %d\n", *client_fd);
-
-		// Refuse non white-listed connections
-		/*
-		char s[INET_ADDRSTRLEN];
-		inet_ntop(AF_INET, &(client_addr.sin_addr), s, INET_ADDRSTRLEN); // GET IPv4 from client
-		char allowed_ips[1][16] = {"127.0.0.1"};
-
-		for (int i=0; i<sizeof(allowed_ips); i++) {
-			if (strcmp(s, allowed_ips[i]) == 0) {
-				printf("Connection from localhost\n");
-			} else {
-				printf("Connection from %s\n", s);
-				printf("Connection refused, caller not allowed\n");
+			free(client_fd); // Free the malloc'd pointer on error
+		} else {
+			printf("Client connected: %d\n", *client_fd);
+			
+			pthread_t thread_pid;
+			// Create a new thread that runs the handle_connection function
+			// and passes the client_fd as an argument
+			// handle_connection closes it's own socket once it finishes
+			int thread_result = pthread_create(&thread_pid, NULL, handle_connection, (void *)client_fd);
+			if (thread_result != 0) {
+				perror("Failed to create thread");
 				close(*client_fd);
-				continue;
-			}
+				free(client_fd); // Free the malloc'd pointer on pthread_create error
+			} else {
+				// Detach the thread to allow it to run independently
+				pthread_detach(thread_pid);
+			}	
 		}
-		*/
-
-		pthread_t thread_pid;
-		// Create a new thread that runs the handle_connection function
-		// and passes the client_fd as an argument
-		// handle_connection closes it's own socket once it finishes
-		pthread_create(&thread_pid, NULL, handle_connection, (void *)client_fd);
-		// Detach the thread to allow it to run independently
-		pthread_detach(thread_pid);
 	}
 
+	printf("Shutting down server...\n");
 	close(server_fd);
 	return 0;
 }
