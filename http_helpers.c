@@ -112,7 +112,6 @@ char *get_boundary(const char *content_type) {
 
 
 void parse_multipart_form_data(struct Req_Body* body) {
-
     char *boundary = get_boundary(body->content_type);
     if (boundary == NULL) {
         perror("No boundary found in Content-Type\n");
@@ -165,9 +164,9 @@ void parse_multipart_form_data(struct Req_Body* body) {
             7 [ part 2 headers ... ]
             8 [ ... ]
             This extracts the first part, from point 2 (we exclude the first \r\n),
-            up until the \r\n before the boundary, so this_part contains { 2, 3, 4, 5 }
+            up until and including the boundary, so this_part contains { 2, 3, 4, 5, 6 }
         */
-        char *this_part = extract_substr(body_copy, "\r\n", boundary, false, false);
+        char *this_part = extract_substr(body_copy, "\r\n", boundary, false, true);
         if (this_part == NULL) {
             break;
         }
@@ -177,9 +176,10 @@ void parse_multipart_form_data(struct Req_Body* body) {
             3 [ \r\n\r\n ]
             4 [ data]
             5 [ \r\n ]
+            6 [ end boundary ]
             Data is always after a double CRLF and before a single CRLF followed by the boundary
         */
-        char *part_content_start = extract_substr(this_part, "\r\n\r\n", "\r\n", false, false);
+        char *part_content_start = extract_substr(this_part, "\r\n\r\n", boundary, false, false);
         size_t part_content_length = strlen(part_content_start);
     
         struct Part *new_part = malloc(sizeof(struct Part));
