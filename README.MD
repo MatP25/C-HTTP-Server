@@ -17,6 +17,13 @@ HTTP Server written in C
 * **get_concurrent.sh**: run concurrent GET requests sent to the /health endpoint with Apache Benchmark (Apache Benchmark is not included in the container)
 * **post_data.sh**: makes a POST request with text/plain content type with curl
 
+### Shortcomings: Plenty, don't use this
+1. Requests cannot exceed 20MB. handle_conection calls recv and copies the request into a 20MB buffer. If the request exceeds that size the rest of the data is lost.
+2. Some of the structs that are used for manipulating the requests, responses and files use void or char pointers for manipulating the data content. There are several inconsistencies. In order to better handle data of any type (binary and text) I should use unsigned char pointers.
+3. In some places there are int variables that should be of type size_t or ssize_t.
+4. A lot of optimizations can be made to functions that parse data without making so many string copies.
+5. Memory management is inconsistent, sometimes the caller frees the memory, sometimes the receiver of the pointer.
+
 ## RUN IN LINUX:
 
 ### 1. COMPILE:
@@ -62,4 +69,5 @@ This project used different sources as a reference and includes snippets of code
 * https://github.com/nipunchamikara/c-web-server
 * https://github.com/bloominstituteoftechnology/C-Web-Server
 * https://github.com/mavstuff/threadtest
+
 
