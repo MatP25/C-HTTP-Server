@@ -50,6 +50,7 @@ docker run -d -p 8080:8080 --name chttpserver chttpserver
 --- 
 
 **References**
+
 This project used different sources for reference and includes snippets of code from different github projects, some parts were modified slightly, others were left as they were in the original source. Those sources are:
 * https://medium.com/@nipunweerasiri/a-simple-web-server-written-in-c-cf7445002e6
 * https://www.geeksforgeeks.org/c/socket-programming-cc/
@@ -60,4 +61,5 @@ This project used different sources for reference and includes snippets of code 
 * https://dev.to/jeffreythecoder/how-i-built-a-simple-http-server-from-scratch-using-c-739
 * https://github.com/nipunchamikara/c-web-server
 * https://github.com/bloominstituteoftechnology/C-Web-Server
+
 * https://github.com/mavstuff/threadtest
