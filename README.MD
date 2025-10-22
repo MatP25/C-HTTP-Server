@@ -24,6 +24,8 @@ HTTP Server written in C
 4. A lot of optimizations can be made to functions that parse data without making so many string copies.
 5. Memory management is inconsistent, sometimes the caller frees the memory, sometimes the receiver of the pointer.
 
+---
+
 ## RUN IN LINUX:
 
 ### 1. COMPILE:
@@ -69,5 +71,6 @@ This project used different sources as a reference and includes snippets of code
 * https://github.com/nipunchamikara/c-web-server
 * https://github.com/bloominstituteoftechnology/C-Web-Server
 * https://github.com/mavstuff/threadtest
+
 
 
