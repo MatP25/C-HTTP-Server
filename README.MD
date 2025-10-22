@@ -10,7 +10,7 @@ HTTP Server written in C
 5. Handles multiple concurrent connections
 6. Uploaded data gets written (appended) to a txt file. The file is created if it doesn't exist
 7. Rudimentary routing which allows adding new static files without modifying the source code
-8. Dockerfile to create a lightweight container to run the server using alpine image
+8. Dockerfile to create a lightweight container to run the server using Alpine image
 
 **There are 3 script files in the scripts/ folder**
 * **runWithValgrind.sh**: run the program with Valgrind to check for memory leaks (Valgrind is not included in the container)

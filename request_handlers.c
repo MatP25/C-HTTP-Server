@@ -57,8 +57,7 @@ void handle_POST(struct Req_Headers *req_headers, struct Req_Body *req_body, int
             send_500(client_fd);
             return;
         }
-
-        send_201(client_fd, "File uploaded successfully", MIME_TEXT_PLAIN, 0);
+        send_201(client_fd, "File uploaded successfully", MIME_TEXT_PLAIN, strlen("File uploaded successfully"));
     } else {
         send_404(client_fd);
     }
